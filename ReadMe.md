@@ -33,9 +33,9 @@ star を頂けますと大変励みになります。
 
 2. [chrome://extensions](chrome://extensions) タブを開く
 
-2-1. デベロッパーモードを on にする
-
 ![chrome extensions](./images/chrome-extensions.png)
+
+2-1. デベロッパーモードを on にする
 
 2-2. [パッケージ化されていない拡張機能を読み込む] を押下
 
