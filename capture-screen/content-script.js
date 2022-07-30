@@ -1,5 +1,3 @@
-console.log('+ content-script')
-
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   console.log(request, sender, response)
   const { file, sizeType } = request
