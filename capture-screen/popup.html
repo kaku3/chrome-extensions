@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8" />
+
+<head>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body class="__extension_capture-screen">
+  <div class="_card">
+    <button id="take" class="button take">Take</button>
+  </div>
+  <div class="_card">
+    <div class="file-container">
+      <h3>ファイル</h3>
+      <div>
+        <label>prefix</label>
+        <input type="text" name="filePrefix" value="0">
+      </div>
+      <div>
+        <label>file</label>
+        <input type="text" name="fileName" value="0">
+      </div>
+      <div>
+        <label>no1</label>
+        <input type="number" name="fileNo1" value="0">
+      </div>
+      <div>
+        <label>no2</label>
+        <input type="number" name="fileNo2" value="0">
+      </div>
+    </div>
+  </div>
+  <div class="_card">
+    <h3>スクリーンショット種別</h3>
+    <div class="size-type-container">
+      <div>
+        <input type="radio" name="sizeType" value="page">
+        <label>ページ</label>
+      </div>
+      <div>
+        <input type="radio" name="sizeType" value="view">
+        <label>ウィンドウ</label>
+      </div>
+    </div>
+  </div>
+  <div class="_card">
+    <h3>リサイズ</h3>
+    <div class="window-size-container">
+      <div>
+        <label>W</label>
+        <input type="number" name="width" value="0">
+      </div>
+      <div>
+        <label>H</label>
+        <input type="number" name="height" value="0">
+      </div>
+    </div>
+    <div class="action-buttons right">
+      <button id="resizeWindow" class="button">Resize</button>
+    </div>
+  </div>
+
+
+
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/html2canvas.min.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+
+</html>

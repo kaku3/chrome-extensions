@@ -1,0 +1,70 @@
+.__extension_capture-screen {
+  padding: 0;
+  width: 200px;
+  background: #f0f0f0;
+
+  h3 {
+    margin: .25rem 0 .1rem;
+  }
+
+  .size-type-container {
+    display: flex;
+  }
+  .file-container {
+    > div {
+      white-space: nowrap;
+      label {
+        display: inline-block;
+        width: 3rem;
+      }
+      input {
+        width: 5rem;
+      }
+    }
+  }
+  .window-size-container {
+    display: flex;
+    > div {
+      white-space: nowrap;
+      label {
+        display: inline-block;
+        margin-left: .75rem;
+        width: 1rem;
+      }
+      input {
+        width: 3.5rem;
+      }
+    }
+  }
+
+  ._card {
+    padding: .1rem .25rem .25rem;
+    border-bottom: 1px solid #ccc;
+  }
+  ._card + ._card {
+    margin-top: .5rem;
+  }
+  .action-buttons {
+    margin-top: .25rem;
+
+    &.right {
+      text-align: right;
+    }
+  }
+
+  .button {
+    cursor: pointer;
+    padding: .25rem;
+    &.take {
+      width: 100%;
+      color: white;
+      background-color: #009688;
+      border: none;
+      border-radius: 4px;
+
+      &:hover {
+        filter: brightness(150%)
+      }
+    }
+  }
+}
