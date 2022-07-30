@@ -30,11 +30,16 @@ star を頂けますと大変励みになります。
 
 ## インストール手順(例)
 1. [Capture Screen](./capture-screen/) フォルダをダウンロード
+
 2. [chrome://extensions](chrome://extensions) タブを開く
+
 2-1. デベロッパーモードを on にする
 ![chrome extensions](./images/chrome-extensions.png)
+
 2-2. [パッケージ化されていない拡張機能を読み込む] を押下
+
 2-3. ダウンロードした `capture-screen/` フォルダを指定
+
 3. Capture Screen が読み込まれていればインストール完了
 ![Capture Screen](./images/chrome-extensions_capture-screen.png)
 
@@ -53,12 +58,15 @@ Chrome Extension は、構成定義ファイルである `manifest.json` およ�
 `manifest.json` に定義できる構成は以下になります。
 
 - action
+
 アイコンクリックで表示されるポップアップ。`html`, `css`, `js` で構成されます。
 
 - background
+
 ページ外で動作する Service Worker。データの永続化などに利用します。
 
 - content-scripts
+
 ページに埋め込むスクリプト。ページ内の dom 操作を行う場合は、content-script に記述となります。
 
 
