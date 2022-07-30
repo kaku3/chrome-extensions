@@ -1,10 +1,8 @@
 # Google Chrome Extension 置き場
 
-何か思いついたら追加します。
-ご自由にお持ちになってください。
-
-(参考サイト)
-[Chrome Developers Extensions](https://developer.chrome.com/docs/extensions/)
+Google Chrome 向けの Extension 置き場です。
+何か思いついたら追加します。ご自由にお持ちになってください。
+star を頂けますと大変励みになります。
 
 ## Extensions
 
@@ -95,3 +93,5 @@ Chrome Extension は、構成定義ファイルである `manifest.json` およ�
 }
 ```
 
+## 参考サイト
+[Chrome Developers Extensions](https://developer.chrome.com/docs/extensions/)
