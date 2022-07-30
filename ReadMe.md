@@ -33,13 +33,13 @@ star を頂けますと大変励みになります。
 
 2. [chrome://extensions](chrome://extensions) タブを開く
 
-2-1. デベロッパーモードを on にする
+    2-1. デベロッパーモードを on にする
 
 ![chrome extensions](./images/chrome-extensions.png)
 
-2-2. [パッケージ化されていない拡張機能を読み込む] を押下
+    2-2. [パッケージ化されていない拡張機能を読み込む] を押下
 
-2-3. ダウンロードした `capture-screen/` フォルダを指定
+    2-3. ダウンロードした `capture-screen/` フォルダを指定
 
 3. Capture Screen が読み込まれていればインストール完了
 
