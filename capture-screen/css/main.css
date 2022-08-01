@@ -24,7 +24,12 @@
 }
 
 .__extension_capture-screen .file-container > div input {
-  width: 5rem;
+  padding: .25rem;
+  width: 8rem;
+}
+
+.__extension_capture-screen .file-container > div input[type=number] {
+  width: 2rem;
 }
 
 .__extension_capture-screen .window-size-container {
@@ -39,11 +44,12 @@
 
 .__extension_capture-screen .window-size-container > div label {
   display: inline-block;
-  margin-left: .75rem;
+  margin-left: .5rem;
   width: 1rem;
 }
 
 .__extension_capture-screen .window-size-container > div input {
+  padding: .25rem;
   width: 3.5rem;
 }
 
@@ -66,10 +72,12 @@
 
 .__extension_capture-screen .button {
   cursor: pointer;
-  padding: .25rem;
+  padding: .5rem;
 }
 
 .__extension_capture-screen .button.take {
+  padding: 2rem;
+  font-size: 1.25rem;
   width: 100%;
   color: white;
   background-color: #009688;
@@ -77,8 +85,57 @@
   border-radius: 4px;
 }
 
+.__extension_capture-screen .button.take:not(.processing) .loader {
+  display: none;
+}
+
 .__extension_capture-screen .button.take:hover {
   -webkit-filter: brightness(150%);
           filter: brightness(150%);
+}
+
+.__extension_capture-screen .loader,
+.__extension_capture-screen .loader:after {
+  border-radius: 50%;
+  width: .5rem;
+  height: .5rem;
+}
+
+.__extension_capture-screen .loader {
+  display: inline-block;
+  margin-left: .5rem;
+  font-size: 4px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 /*# sourceMappingURL=main.css.map */

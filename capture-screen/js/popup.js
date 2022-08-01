@@ -10,7 +10,47 @@ chrome.storage.sync.get(null, (item) => {
   $('input[name=height]').val(windowSize.height)
 })
 
-
+$('input[name=filePrefix]').change(function() {
+  const v = $(this).val()
+  chrome.storage.sync.get('file', (o) => {
+    const { file } = o
+    file.prefix = v
+    chrome.storage.sync.set({ file })
+  })
+})
+$('input[name=fileName]').change(function() {
+  const v = $(this).val()
+  chrome.storage.sync.get('file', (o) => {
+    const { file } = o
+    file.name = v
+    chrome.storage.sync.set({ file })
+  })
+})
+$('input[name=fileNo1]').change(function() {
+  const v = $(this).val()
+  chrome.storage.sync.get('file', (o) => {
+    const { file } = o
+    file.no1 = Number(v)
+    chrome.storage.sync.set({ file })
+  })
+})
+$('input[name=fileNo2]').change(function() {
+  const v = $(this).val()
+  chrome.storage.sync.get('file', (o) => {
+    const { file } = o
+    file.no2 = Number(v)
+    chrome.storage.sync.set({ file })
+  })
+})
+$('input[type=radio][name=sizeType]').change(function() {
+  const v = $(this).val()
+  console.log(v)
+  chrome.storage.sync.get('sizeType', (o) => {
+    let { sizeType } = o
+    sizeType = v
+    chrome.storage.sync.set({ sizeType })
+  })
+})
 //
 // take screen shot.
 //
@@ -19,29 +59,23 @@ takeButton.addEventListener('click', async () => {
   console.log('+ take()')
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
-  const file = {
-    prefix: $('input[name=filePrefix]').val(),
-    name: $('input[name=fileName]').val(),
-    no1: Number($('input[name=fileNo1]').val()),
-    no2: Number($('input[name=fileNo2]').val())
-  }
-  const sizeType = $('input[type=radio][name=sizeType]:checked').val()
-  chrome.tabs.sendMessage(tab.id,
-    {
-      method: 'takeScreenShot',
-      file,
-      sizeType
-    },
-    (response) => {
-    })
+  takeButton.classList.add('processing')
+  chrome.storage.sync.get(null, (item) => {
+    const { file, sizeType } = item
 
-  // ss取るたびに自動インクリメントする
-  file.no2++
-  $('input[name=fileNo2]').val(file.no2)
-
-  chrome.storage.sync.set({ file, sizeType })
-
-
+    chrome.tabs.sendMessage(tab.id,
+      {
+        message: 'takeScreenShot',
+        file,
+        sizeType
+      },
+      (response) => {
+        console.log('- take()', response)
+      })
+    file.no2++
+    chrome.storage.sync.set({ file })
+    $('input[name=fileNo2]').val(file.no2)
+  })    
 })
 
 //
@@ -61,3 +95,9 @@ resizeWindowButton.addEventListener('click', () => {
   chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, o)
 })
 
+chrome.runtime.onMessage.addListener(function(request, sender, response) {
+  if(request.message === 'downloaded') {
+    takeButton.classList.remove('processing')
+  }
+  console.log(request, sender, response)
+})

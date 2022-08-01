@@ -18,7 +18,12 @@
         width: 3rem;
       }
       input {
-        width: 5rem;
+        padding: .25rem;
+        width: 8rem;
+
+        &[type=number] {
+          width: 2rem;
+        }
       }
     }
   }
@@ -28,10 +33,11 @@
       white-space: nowrap;
       label {
         display: inline-block;
-        margin-left: .75rem;
+        margin-left: .5rem;
         width: 1rem;
       }
       input {
+        padding: .25rem;
         width: 3.5rem;
       }
     }
@@ -54,17 +60,70 @@
 
   .button {
     cursor: pointer;
-    padding: .25rem;
+    padding: .5rem;
     &.take {
+      padding: 2rem;
+      font-size: 1.25rem;
       width: 100%;
       color: white;
       background-color: #009688;
       border: none;
       border-radius: 4px;
 
+      &:not(.processing) {
+        .loader {
+          display: none;
+        }
+      }
+
       &:hover {
         filter: brightness(150%)
       }
     }
   }
+
+
+  .loader,
+  .loader:after {
+    border-radius: 50%;
+    width: .5rem;
+    height: .5rem;
+  }
+  .loader {
+    display: inline-block;
+    margin-left: .5rem;
+    font-size: 4px;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-left: 1.1em solid #ffffff;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+  }
+  @-webkit-keyframes load8 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes load8 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
 }
