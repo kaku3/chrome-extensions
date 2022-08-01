@@ -1,5 +1,5 @@
-chrome.storage.sync.get(null, (item) => {
-  const { file, sizeType, windowSize } = item
+chrome.storage.sync.get(null, (o) => {
+  const { file, sizeType, windowSize } = o
   $('input[name=filePrefix]').val(file.prefix)
   $('input[name=fileName]').val(file.name)
   $('input[name=fileNo1]').val(file.no1)
@@ -60,8 +60,8 @@ takeButton.addEventListener('click', async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   takeButton.classList.add('processing')
-  chrome.storage.sync.get(null, (item) => {
-    const { file, sizeType } = item
+  chrome.storage.sync.get(null, (o) => {
+    const { file, sizeType } = o
 
     chrome.tabs.sendMessage(tab.id,
       {
