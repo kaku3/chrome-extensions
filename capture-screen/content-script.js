@@ -1,10 +1,3 @@
-chrome.runtime.onMessage.addListener(function(request, sender, response) {
-  console.log(request, sender, response)
-  const { file, sizeType } = request
-  const fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}.png`
-
-  response(takeScreenShot(fileName, sizeType))
-})
 
 function takeScreenShot(fileName, sizeType) {
   console.log(sizeType, fileName)
@@ -20,8 +13,12 @@ function takeScreenShot(fileName, sizeType) {
 
   html2canvas(body, o).then(canvas => {
     downloadImage(fileName, canvas.toDataURL())
+
+    chrome.runtime.sendMessage({
+      message: 'downloaded'
+    })
+
   })
-  return true
 }
 
 /**
@@ -34,3 +31,14 @@ function downloadImage (fileName, data) {
   a.download = fileName
   a.click()
 }
+
+chrome.runtime.onMessage.addListener(function(request, sender, response) {
+  console.log(request, sender, response)
+  if(request.message === 'takeScreenShot') {
+    const { file, sizeType } = request
+    const fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}.png`
+
+    takeScreenShot(fileName, sizeType)
+    response(true)
+  }
+})

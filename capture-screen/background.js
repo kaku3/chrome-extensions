@@ -17,3 +17,27 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   })
 })
+
+
+chrome.commands.onCommand.addListener(async function(c) {
+  if(c === 'take') {
+    console.log('+ take()')
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+
+    chrome.storage.sync.get(null, (item) => {
+      const { file, sizeType } = item
+
+      chrome.tabs.sendMessage(tab.id,
+        {
+          message: 'takeScreenShot',
+          file,
+          sizeType
+        },
+        (response) => {
+          console.log('- take()', response)
+        })
+      file.no2++
+      chrome.storage.sync.set({ file })
+    })    
+  }
+})

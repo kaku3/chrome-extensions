@@ -37,5 +37,14 @@
     "32": "/images/app_32.png",
     "48": "/images/app_48.png",
     "128": "/images/app_128.png"      
+  },
+  "commands": {
+    "take": {
+      "description": "Screenshot を撮る",
+      "global": false,
+      "suggested_key": {
+        "default": "Alt+Shift+S"
+      }
+    }
   }
 }
