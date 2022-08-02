@@ -24,8 +24,8 @@ star を頂けますと大変励みになります。
 ## Extensions
 
 - [Capture Screen](./capture-screen/)
-試験エビデンス取得向け Extension。
-表示しているページのスクリーンショットを取得します。
+
+試験エビデンス取得向け Extension。表示しているページのスクリーンショットを取得します。
 
 
 ## インストール手順(例)
