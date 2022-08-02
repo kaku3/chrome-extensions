@@ -1,28 +1,29 @@
 
 function takeScreenShot(fileName, sizeType, file) {
   console.log(sizeType, fileName)
-  const body = document.querySelector('body')
-  const o = (sizeType === 'view') ?
-    {
-      x: window.scrollX,
-      y: window.scrollY,
-      width: window.innerWidth,
-      height: window.innerHeight,
-    } :
-    {}
 
-  html2canvas(body, o).then(canvas => {
-    downloadImage(fileName, canvas.toDataURL())
+  // const body = document.querySelector('body')
+  // const o = (sizeType === 'view') ?
+  //   {
+  //     x: window.scrollX,
+  //     y: window.scrollY,
+  //     width: window.innerWidth,
+  //     height: window.innerHeight,
+  //   } :
+  //   {}
 
-    file.no2++
-    chrome.storage.sync.set({ file })
+  // html2canvas(body, o).then(canvas => {
+  //   downloadImage(fileName, canvas.toDataURL())
 
-    chrome.runtime.sendMessage({
-      message: 'downloaded',
-      file
-    })
+  //   file.no2++
+  //   chrome.storage.sync.set({ file })
 
-  })
+  //   chrome.runtime.sendMessage({
+  //     message: 'downloaded',
+  //     file
+  //   })
+
+  // })
 }
 
 /**

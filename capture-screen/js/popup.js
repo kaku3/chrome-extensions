@@ -43,13 +43,15 @@ takeButton.addEventListener('click', async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   takeButton.classList.add('processing')
-  chrome.tabs.sendMessage(tab.id,
-    {
-      message: 'takeScreenShot'
-    },
-    (response) => {
-      console.log('- take()', response)
-    })
+  // chrome.tabs.sendMessage(tab.id,
+  //   {
+  //     message: 'takeScreenShot'
+  //   },
+  //   (response) => {
+  //     console.log('- take()', response)
+  //   })
+
+  takeScreenShot()
 })
 
 //
@@ -77,3 +79,30 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
   }
   console.log(request, sender, response)
 })
+
+
+function takeScreenShot() {
+  console.log('+ takeScreenShot()')
+  chrome.desktopCapture.chooseDesktopMedia(
+    [ 'window' ],
+    function(streamId) {
+      console.log(streamId)
+      navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          mandatory: {
+            chromeMediaSource: 'desktop',
+            chromeMediaSourceId: streamId
+          }
+        }
+      }).then((stream) => {
+        console.log(stream)
+        const video = document.createElement('video')
+        video.addEventListener('canplay', (e) => {
+          console.log('canplay', e)
+        })
+        video.srcObject = stream
+      })
+    }
+  )
+}

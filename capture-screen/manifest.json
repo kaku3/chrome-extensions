@@ -7,6 +7,7 @@
     "service_worker": "background.js"
   },
   "permissions": [
+    "desktopCapture",
     "storage",
     "activeTab",
     "scripting"
