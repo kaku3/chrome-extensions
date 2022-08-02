@@ -24,20 +24,12 @@ chrome.commands.onCommand.addListener(async function(c) {
     console.log('+ take()')
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
-    chrome.storage.sync.get(null, (item) => {
-      const { file, sizeType } = item
-
-      chrome.tabs.sendMessage(tab.id,
-        {
-          message: 'takeScreenShot',
-          file,
-          sizeType
-        },
-        (response) => {
-          console.log('- take()', response)
-        })
-      file.no2++
-      chrome.storage.sync.set({ file })
-    })    
+    chrome.tabs.sendMessage(tab.id,
+      {
+        message: 'takeScreenShot'
+      },
+      (response) => {
+        console.log('- take()', response)
+      })
   }
 })

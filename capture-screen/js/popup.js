@@ -11,46 +11,29 @@ chrome.storage.sync.get(null, (o) => {
 })
 
 $('input[name=filePrefix]').change(function() {
-  const v = $(this).val()
-  chrome.storage.sync.get('file', (o) => {
-    const { file } = o
-    file.prefix = v
-    chrome.storage.sync.set({ file })
-  })
+  updateFile({ prefix: $(this).val() })
 })
 $('input[name=fileName]').change(function() {
-  const v = $(this).val()
-  chrome.storage.sync.get('file', (o) => {
-    const { file } = o
-    file.name = v
-    chrome.storage.sync.set({ file })
-  })
+  updateFile({ name: $(this).val() })
 })
 $('input[name=fileNo1]').change(function() {
-  const v = $(this).val()
-  chrome.storage.sync.get('file', (o) => {
-    const { file } = o
-    file.no1 = Number(v)
-    chrome.storage.sync.set({ file })
-  })
+  updateFile({ no1: Number($(this).val()) })
 })
 $('input[name=fileNo2]').change(function() {
-  const v = $(this).val()
-  chrome.storage.sync.get('file', (o) => {
-    const { file } = o
-    file.no2 = Number(v)
-    chrome.storage.sync.set({ file })
-  })
+  updateFile({ no2: Number($(this).val()) })
 })
 $('input[type=radio][name=sizeType]').change(function() {
-  const v = $(this).val()
-  console.log(v)
-  chrome.storage.sync.get('sizeType', (o) => {
-    let { sizeType } = o
-    sizeType = v
-    chrome.storage.sync.set({ sizeType })
-  })
+  chrome.storage.sync.set({ sizeType: $(this).val() })
 })
+
+function updateFile(v) {
+  chrome.storage.sync.get('file', (o) => {
+    let { file } = o
+    file = { ...file, ...v }
+    chrome.storage.sync.set({ file })
+  })
+}
+
 //
 // take screen shot.
 //
@@ -60,22 +43,13 @@ takeButton.addEventListener('click', async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   takeButton.classList.add('processing')
-  chrome.storage.sync.get(null, (o) => {
-    const { file, sizeType } = o
-
-    chrome.tabs.sendMessage(tab.id,
-      {
-        message: 'takeScreenShot',
-        file,
-        sizeType
-      },
-      (response) => {
-        console.log('- take()', response)
-      })
-    file.no2++
-    chrome.storage.sync.set({ file })
-    $('input[name=fileNo2]').val(file.no2)
-  })    
+  chrome.tabs.sendMessage(tab.id,
+    {
+      message: 'takeScreenShot'
+    },
+    (response) => {
+      console.log('- take()', response)
+    })
 })
 
 //
@@ -97,6 +71,8 @@ resizeWindowButton.addEventListener('click', () => {
 
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   if(request.message === 'downloaded') {
+    $('input[name=fileNo2]').val(request.file.no2)
+
     takeButton.classList.remove('processing')
   }
   console.log(request, sender, response)

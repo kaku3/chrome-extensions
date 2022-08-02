@@ -1,5 +1,5 @@
 
-function takeScreenShot(fileName, sizeType) {
+function takeScreenShot(fileName, sizeType, file) {
   console.log(sizeType, fileName)
   const body = document.querySelector('body')
   const o = (sizeType === 'view') ?
@@ -14,8 +14,12 @@ function takeScreenShot(fileName, sizeType) {
   html2canvas(body, o).then(canvas => {
     downloadImage(fileName, canvas.toDataURL())
 
+    file.no2++
+    chrome.storage.sync.set({ file })
+
     chrome.runtime.sendMessage({
-      message: 'downloaded'
+      message: 'downloaded',
+      file
     })
 
   })
@@ -35,10 +39,12 @@ function downloadImage (fileName, data) {
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   console.log(request, sender, response)
   if(request.message === 'takeScreenShot') {
-    const { file, sizeType } = request
-    const fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}.png`
+    chrome.storage.sync.get(null, (o) => {
+      const { file, sizeType } = o
+      const fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}.png`
+      takeScreenShot(fileName, sizeType, file)
+    })
 
-    takeScreenShot(fileName, sizeType)
     response(true)
   }
 })
