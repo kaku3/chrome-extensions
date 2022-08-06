@@ -23,6 +23,10 @@ function download(o) {
   }catch(err){
     // 2022/08/06
     // navigator.clipboard.write は、https サイトでしか動作しない。
+    //
+    // chrome://flags
+    // Insecure origins treated as secure で、サイト指定すれば、 navigator.clipboard.write は動作する。
+    //
     // http サイトの場合は、document.execCommand('copy') でコピーをしようとしたが、
     // document.execCommand('copy') は、非推奨 -> 廃止となった模様
     // copyToClipboard()
