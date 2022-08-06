@@ -1,16 +1,15 @@
 {
   "name": "Capture Screen",
   "description": "スクリーンキャプチャ extension",
-  "version": "1.0",
+  "version": "0.0.1",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
   "permissions": [
-    "desktopCapture",
-    "storage",
+    "debugger",
     "activeTab",
-    "scripting"
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -27,8 +26,6 @@
         "*://*/*"
       ],
       "js": [
-        "js/jquery-3.6.0.min.js",
-        "js/html2canvas.min.js",
         "content-script.js"
       ]
     }
@@ -40,11 +37,18 @@
     "128": "/images/app_128.png"      
   },
   "commands": {
-    "take": {
-      "description": "Screenshot を撮る",
+    "takePageScreenshot": {
+      "description": "Full Page Screenshot を撮る",
       "global": false,
       "suggested_key": {
-        "default": "Alt+Shift+S"
+        "default": "Alt+Shift+1"
+      }
+    },
+    "takeWindowScreenshot": {
+      "description": "Window Screenshot を撮る",
+      "global": false,
+      "suggested_key": {
+        "default": "Alt+Shift+2"
       }
     }
   }

@@ -40,18 +40,10 @@ function updateFile(v) {
 const takeButton = document.getElementById('take')
 takeButton.addEventListener('click', async () => {
   console.log('+ take()')
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
-
   takeButton.classList.add('processing')
-  // chrome.tabs.sendMessage(tab.id,
-  //   {
-  //     message: 'takeScreenShot'
-  //   },
-  //   (response) => {
-  //     console.log('- take()', response)
-  //   })
 
-  takeScreenShot()
+  // background で撮影
+  chrome.runtime.sendMessage(null, { message: 'takeScreenshot' })  
 })
 
 //
@@ -71,38 +63,13 @@ resizeWindowButton.addEventListener('click', () => {
   chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, o)
 })
 
+/**
+ * message
+ */
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
-  if(request.message === 'downloaded') {
-    $('input[name=fileNo2]').val(request.file.no2)
-
-    takeButton.classList.remove('processing')
-  }
   console.log(request, sender, response)
+  if(request.message === 'downloaded') {
+    takeButton.classList.remove('processing')
+    $('input[name=fileNo2]').val(request.file.no2)
+  }
 })
-
-
-function takeScreenShot() {
-  console.log('+ takeScreenShot()')
-  chrome.desktopCapture.chooseDesktopMedia(
-    [ 'window' ],
-    function(streamId) {
-      console.log(streamId)
-      navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {
-          mandatory: {
-            chromeMediaSource: 'desktop',
-            chromeMediaSourceId: streamId
-          }
-        }
-      }).then((stream) => {
-        console.log(stream)
-        const video = document.createElement('video')
-        video.addEventListener('canplay', (e) => {
-          console.log('canplay', e)
-        })
-        video.srcObject = stream
-      })
-    }
-  )
-}
