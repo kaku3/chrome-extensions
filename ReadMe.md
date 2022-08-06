@@ -78,15 +78,15 @@ Chrome Extension は、構成定義ファイルである `manifest.json` およ�
 {
   "name": "Capture Screen",
   "description": "スクリーンキャプチャ extension",
-  "version": "1.0",
+  "version": "0.0.1",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
   "permissions": [
-    "storage",
+    "debugger",
     "activeTab",
-    "scripting"
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -103,8 +103,6 @@ Chrome Extension は、構成定義ファイルである `manifest.json` およ�
         "*://*/*"
       ],
       "js": [
-        "js/jquery-3.6.0.min.js",
-        "js/html2canvas.min.js",
         "content-script.js"
       ]
     }
@@ -114,6 +112,22 @@ Chrome Extension は、構成定義ファイルである `manifest.json` およ�
     "32": "/images/app_32.png",
     "48": "/images/app_48.png",
     "128": "/images/app_128.png"      
+  },
+  "commands": {
+    "takePageScreenshot": {
+      "description": "Full Page Screenshot を撮る",
+      "global": false,
+      "suggested_key": {
+        "default": "Alt+Shift+1"
+      }
+    },
+    "takeWindowScreenshot": {
+      "description": "Window Screenshot を撮る",
+      "global": false,
+      "suggested_key": {
+        "default": "Alt+Shift+2"
+      }
+    }
   }
 }
 ```
@@ -125,8 +139,19 @@ Chrome Extension は、構成定義ファイルである `manifest.json` およ�
 
 `content-scripts` の起動時に `message listener` を登録し、`action` から message を投げて任意の `content-script` を実行させることになります。
 
+より複雑な動作をさせる必要がある場合、`runtime.message` と、`tabs.message` を使い分けて各スクリプトに必要な動作をさせるような実装とします。
+
+![Extension message](./images/Extension-message.drawio.png)
+
+Capture Screen の例)
+
+- スクリーンショットを撮れるのは、debugger にアクセスできる `action` または `background`
+- スクリーンショットをダウンロードするタグを作れるのは、ページに配置されていて document を持つ `content-script`
+- ショートカットキーが押されたことをいつでも検知できるのは `background`
+
 ここまでが Extension 固有の概念となります。
-後は普通の web 開発です。公式の入門ページへ足を進めてみましょう！
+
+後は普通の web 開発の知識があれば Extension を作れることでしょう。興味があれば公式の入門ページを見て実際に作ってみるといいでしょう。
 
 [Chrome Developers Extensions > Getting Started](https://developer.chrome.com/docs/extensions/mv3/getstarted/)
 
