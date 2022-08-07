@@ -26,7 +26,12 @@
         "*://*/*"
       ],
       "js": [
+        "js/jquery-3.6.0.min.js",
+        "js/capture-screen-controller.js",
         "content-script.js"
+      ],
+      "css": [
+        "css/content.css"
       ]
     }
   ],

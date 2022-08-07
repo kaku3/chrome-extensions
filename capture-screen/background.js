@@ -27,31 +27,33 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.commands.onCommand.addListener(async function(c) {
   console.log('+ onCommand()', c)
   if(c === 'takePageScreenshot') {
-    takeScreenshot('page')
+    takeScreenshot('page', null)
   } else if(c === 'takeWindowScreenshot') {
-    takeScreenshot('window')
+    takeScreenshot('window', null)
   }
   console.log('- onCommand()')
 })
 
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   console.log('+ onMessage()', request, sender, response)
-  takeScreenshot()
+  takeScreenshot(null, request.rect)
   console.log('- onMessage()')
 })
 
-function takeScreenshot(_sizeType) {
+function takeScreenshot(_sizeType, rect) {
   chrome.storage.sync.get(null, (o) => {
     const { file, sizeType } = o
     if(!_sizeType) {
       _sizeType = sizeType
     }
-    takeScreenshotImpl(file, _sizeType)
+    takeScreenshotImpl(file, _sizeType, rect)
   })
 }
 
-async function takeScreenshotImpl(file, sizeType) {
+async function takeScreenshotImpl(file, sizeType, rect) {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+
+  console.log('+ takeScreenshotImpl', rect)
 
   // デバッガの機能でスクリーンショットを撮る：atach ~ capture ~ detach
   chrome.debugger.attach({ tabId: tab.id }, '1.3', async () => {
@@ -64,7 +66,17 @@ async function takeScreenshotImpl(file, sizeType) {
       let params = {
         format: 'png'
       }
-      if(sizeType === 'page') {
+      if(rect) {
+        params = { 
+          ...params,
+          clip: {
+            ...rect,
+            scale: 1
+          },
+          captureBeyondViewport: true
+        }
+        console.log(params)
+      } else if(sizeType === 'page') {
         params = { 
           ...params,
           clip: {

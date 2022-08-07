@@ -1,7 +1,17 @@
+const csc = new CaptureScreenController()
+
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   console.log(request, sender, response)
-  if(request.message === 'download') {
+  const { message } = request
+
+  if(message === 'download') {
     download({ data, file } = request)
+    response(true)
+  } else if(message === 'startSelectRange') {
+    csc.startSelectRange()
+    response(true)
+  } else if(message === 'stopSelectRange') {
+    csc.stopSelectRange()
     response(true)
   }
 })
@@ -42,6 +52,7 @@ function download(o) {
     // document.execCommand('copy') は、非推奨 -> 廃止となった模様
     // copyToClipboard()
   }
+  csc.finishProcess()
 }
 
 /**

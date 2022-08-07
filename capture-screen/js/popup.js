@@ -1,3 +1,5 @@
+sendMessageToContentScript({ message: 'stopSelectRange' })
+
 chrome.storage.sync.get(null, (o) => {
   const { file, sizeType, windowSize } = o
   $('input[name=filePrefix]').val(file.prefix)
@@ -51,7 +53,7 @@ function updateFile(v) {
 // take screen shot.
 //
 const takeButton = document.getElementById('take')
-takeButton.addEventListener('click', async () => {
+takeButton.addEventListener('click', () => {
   console.log('+ take()')
   takeButton.classList.add('processing')
 
@@ -59,11 +61,28 @@ takeButton.addEventListener('click', async () => {
   chrome.runtime.sendMessage(null, { message: 'takeScreenshot' })  
 })
 
+// 範囲キャプチャ開始 / 停止
+const toggleSelectRangeButton = document.getElementById('toggleSelectRange')
+toggleSelectRangeButton.addEventListener('click', function(e) {
+  const action = $(this).text()
+
+  if(action === 'Start') {
+    sendMessageToContentScript({
+      message: 'startSelectRange'
+    })
+  } else {
+    sendMessageToContentScript({
+      message: 'stopSelectRange'
+    })
+  }
+  $(this).text(action === 'Start' ? 'Stop' : 'Start')
+})
+
 //
 // resize button.
 //
 const resizeWindowButton = document.getElementById('resizeWindow')
-resizeWindowButton.addEventListener('click', () => {
+resizeWindowButton.addEventListener('click', function(e) {
 
   const windowSize = {
     width: Number($('input[type=number][name=width]').val()),
@@ -86,3 +105,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
     $('input[name=fileNo2]').val(request.file.no2)
   }
 })
+
+
+async function sendMessageToContentScript(o) {
+  let [ tab ] = await chrome.tabs.query({ active: true, currentWindow: true })
+  chrome.tabs.sendMessage(tab.id, o)
+}
