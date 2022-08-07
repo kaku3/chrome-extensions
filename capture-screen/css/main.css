@@ -15,6 +15,7 @@
 }
 
 .__extension_capture-screen .file-container > div {
+  margin-bottom: .25rem;
   white-space: nowrap;
 }
 
@@ -30,6 +31,10 @@
 
 .__extension_capture-screen .file-container > div input[type=number] {
   width: 2rem;
+}
+
+.__extension_capture-screen .file-container > div input[type=checkbox] {
+  width: auto;
 }
 
 .__extension_capture-screen .window-size-container {

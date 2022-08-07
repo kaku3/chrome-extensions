@@ -15,10 +15,13 @@
 |---|---|
 |extension icon | Capture Screen ポップアップ表示
 |[Take]ボタン   |スクリーンショットを取得し、ダウンロードフォルダに保存<br />ショートカットキー : Alt+Shift+S   |
-|ファイル| 出力ファイル名設定 : `{prefix}_{no1}_{no2}_{file}_{page|window}.png` |
+|ファイル名設定| 出力ファイル名設定 : `{prefix}_{no1}_{no2}_{file}(_{URL Host})(_{URL Path}).png` |
 |prefix| ファイル名の prefix |
 |no1| 連番1 |
 |no2| 連番2<br />スクリーンショットを取得すると自動で 1 ずつ増加する。 |
+|file| ファイル名 |
+|URL Host| URL Host をファイル名に含めるか。Host例) example.co.jp/sample -> example_co_jp |
+|URL Path| URL Path をファイル名に含めるか。Path例) example.co.jp/sample -> _sample |
 |スクリーンショット種別||
 |ページ| ページ全体のスクリーンショットを取得 |
 |ウィンドウ| 表示中のウィンドウ内のスクリーンショットを取得<br />※ヘッダやフッタを固定しているページでは正しく動作しないことがある模様 |

@@ -1,16 +1,27 @@
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   console.log(request, sender, response)
   if(request.message === 'download') {
-    download({ data, fileName } = request)
+    download({ data, file } = request)
     response(true)
   }
 })
 
 function download(o) {
-  const dataUrl = 'data:image/png;base64,' + o.data
+  const { data, file } = o
+  const dataUrl = 'data:image/png;base64,' + data
   const e = document.createElement('a')
+
+  let fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}`
+  if(file.urlHost) {
+    fileName += `_${location.host.replace(/[:\/\.]/g, '_')}`
+  }
+  if(file.urlPath) {
+    fileName += `_${location.pathname.replace(/[:\/\.]/g, '_')}`
+  }
+  fileName += '.png'
+
   e.href = dataUrl
-  e.download = o.fileName
+  e.download = fileName
   e.click()
 
   const blob = new Blob([base64ToArrayBuffer(o.data)], { type: 'image/png'})

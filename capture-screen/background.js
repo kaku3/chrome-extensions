@@ -7,9 +7,11 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     file: {
       prefix: 'prefix',
-      name: 'filename',
       no1: 0,
-      no2: 0
+      no2: 0,
+      name: 'filename',
+      urlHost: false,
+      urlPath: true
     },
     sizeType: 'page',
     windowSize: {
@@ -44,12 +46,11 @@ function takeScreenshot(_sizeType) {
     if(!_sizeType) {
       _sizeType = sizeType
     }
-    const fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}_${_sizeType}.png`
-    takeScreenshotImpl(fileName, _sizeType, file)
+    takeScreenshotImpl(file, _sizeType)
   })
 }
 
-async function takeScreenshotImpl(fileName, sizeType, file) {
+async function takeScreenshotImpl(file, sizeType) {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   // デバッガの機能でスクリーンショットを撮る：atach ~ capture ~ detach
@@ -82,7 +83,7 @@ async function takeScreenshotImpl(fileName, sizeType, file) {
         chrome.tabs.sendMessage(tab.id, {
           message: 'download',
           data: result.data,
-          fileName: fileName
+          file: file
         })
 
         file.no2++

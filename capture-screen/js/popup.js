@@ -1,9 +1,11 @@
 chrome.storage.sync.get(null, (o) => {
   const { file, sizeType, windowSize } = o
   $('input[name=filePrefix]').val(file.prefix)
-  $('input[name=fileName]').val(file.name)
   $('input[name=fileNo1]').val(file.no1)
   $('input[name=fileNo2]').val(file.no2)
+  $('input[name=fileName]').val(file.name)
+  $('input[name=urlHost]').prop('checked', file.urlHost)
+  $('input[name=urlPath]').prop('checked', file.urlPath)
 
   $('input[type=radio][name=sizeType]').val([ sizeType ])
   $('input[name=width]').val(windowSize.width)
@@ -22,6 +24,16 @@ $('input[name=fileNo1]').change(function() {
 $('input[name=fileNo2]').change(function() {
   updateFile({ no2: Number($(this).val()) })
 })
+$('input[type=checkbox][name=urlHost]').change(function() {
+  console.log($(this).prop('checked'))
+  updateFile({ urlHost: $(this).prop('checked') })
+})
+$('input[type=checkbox][name=urlPath]').change(function() {
+  console.log($(this).prop('checked'))
+  updateFile({ urlPath: $(this).prop('checked') })
+})
+
+
 $('input[type=radio][name=sizeType]').change(function() {
   chrome.storage.sync.set({ sizeType: $(this).val() })
 })
@@ -33,6 +45,7 @@ function updateFile(v) {
     chrome.storage.sync.set({ file })
   })
 }
+
 
 //
 // take screen shot.

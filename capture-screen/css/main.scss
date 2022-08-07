@@ -12,6 +12,7 @@
   }
   .file-container {
     > div {
+      margin-bottom: .25rem;
       white-space: nowrap;
       label {
         display: inline-block;
@@ -23,6 +24,9 @@
 
         &[type=number] {
           width: 2rem;
+        }
+        &[type=checkbox] {
+          width: auto;
         }
       }
     }
