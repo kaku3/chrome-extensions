@@ -1,11 +1,16 @@
 const csc = new CaptureScreenController()
 
-chrome.runtime.onMessage.addListener(function(request, sender, response) {
+chrome.runtime.onMessage.addListener(async function(request, sender, response) {
   console.log(request, sender, response)
   const { message } = request
 
   if(message === 'download') {
-    download({ data, file } = request)
+    const { data, file, rect } = request
+    let dataUrl = 'data:image/png;base64,' + data
+    if(rect) {
+      dataUrl = await clip(dataUrl, rect)
+    }
+    download(dataUrl, file)
     response(true)
   } else if(message === 'startSelectRange') {
     csc.startSelectRange()
@@ -16,9 +21,33 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
   }
 })
 
-function download(o) {
-  const { data, file } = o
-  const dataUrl = 'data:image/png;base64,' + data
+/**
+ * 要素指定スクリーンショット用
+ * 全画面スクリーンショットから要素の範囲を切り取る
+ * debugger がスクショを撮る時に、どうも横に 16pxずれるような動作をしている気がする
+ * @param {*} dataUrl 
+ * @param {*} rect 
+ * @returns 
+ */
+function clip(dataUrl, rect) {
+  console.log('+ clip()', rect)
+  return new Promise((resolve) => {
+    const img = document.createElement('img')
+    img.onload = function() {
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.min(rect.width, img.naturalWidth)
+      canvas.height = Math.min(rect.height, img.naturalHeight)
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(img,
+        rect.left, rect.top, rect.width, rect.height,
+        0,0, rect.width, rect.height)
+      resolve(canvas.toDataURL())
+    }
+    img.src = dataUrl
+  })
+}
+
+function download(dataUrl, file) {
   const e = document.createElement('a')
 
   let fileName = `${file.prefix}_${file.no1.toString().padStart(2, '0')}_${file.no2.toString().padStart(2, '0')}_${file.name}`
@@ -34,7 +63,7 @@ function download(o) {
   e.download = fileName
   e.click()
 
-  const blob = new Blob([base64ToArrayBuffer(o.data)], { type: 'image/png'})
+  const blob = new Blob([base64ToArrayBuffer(dataUrl.split(',')[1])], { type: 'image/png'})
   try{
     navigator.clipboard.write([
       new ClipboardItem({
@@ -50,7 +79,7 @@ function download(o) {
     //
     // http サイトの場合は、document.execCommand('copy') でコピーをしようとしたが、
     // document.execCommand('copy') は、非推奨 -> 廃止となった模様
-    // copyToClipboard()
+    // copyToClipboard(dataUrl)
   }
   csc.finishProcess()
 }
@@ -59,7 +88,7 @@ function download(o) {
  * 2022/08/06 : document.execCommand('copy') is not working.
  * 記録として残しておく
  */
-function copyToClipboard() {
+function copyToClipboard(dataUrl) {
   const img = document.createElement('img')
   img.onload = function() {
     const c = document.createElement('div')

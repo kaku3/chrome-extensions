@@ -36,9 +36,9 @@ class CaptureScreenController {
     console.log('+ onClick', e)
     const r = e.target.getBoundingClientRect()
     const rect = {
-      x : r.left + window.scrollX,
-      y : r.top + window.scrollY,
-      width : r.width + 16,  //FIXME: rect が正しく求まらない
+      left : r.left,
+      top : r.top,
+      width : r.width,
       height : r.height
     }
 

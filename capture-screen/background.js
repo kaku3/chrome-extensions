@@ -66,17 +66,7 @@ async function takeScreenshotImpl(file, sizeType, rect) {
       let params = {
         format: 'png'
       }
-      if(rect) {
-        params = { 
-          ...params,
-          clip: {
-            ...rect,
-            scale: 1
-          },
-          captureBeyondViewport: true
-        }
-        console.log(params)
-      } else if(sizeType === 'page') {
+      if(sizeType === 'page' && !rect) {
         params = { 
           ...params,
           clip: {
@@ -95,7 +85,8 @@ async function takeScreenshotImpl(file, sizeType, rect) {
         chrome.tabs.sendMessage(tab.id, {
           message: 'download',
           data: result.data,
-          file: file
+          file,
+          rect
         })
 
         file.no2++
